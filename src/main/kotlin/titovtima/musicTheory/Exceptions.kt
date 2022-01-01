@@ -1,3 +1,5 @@
+package titovtima.musicTheory
+
 class NoteException(val noteId: Int? = null, val natural: Int? = null, val noteName: String? = null, message: String? = null)
     : Exception("Exception: note id $noteId, natural $natural, note name $noteName, message: $message")
 

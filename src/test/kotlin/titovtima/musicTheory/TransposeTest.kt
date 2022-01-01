@@ -1,4 +1,6 @@
-import Note.Companion.sharp
+package titovtima.musicTheory
+
+import titovtima.musicTheory.Note.Companion.sharp
 import org.junit.Test
 import kotlin.test.assertEquals
 

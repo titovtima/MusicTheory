@@ -1,3 +1,5 @@
+package titovtima.musicTheory
+
 class Note (noteId: Int, natural: Int) {
     val noteId = (noteId + 1200) % 12
     val natural = (natural + 700) % 7

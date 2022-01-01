@@ -1,9 +1,11 @@
+package titovtima.musicTheory
+
 interface BiMap<K, V> : Map<K, V> {
     override val values: Set<V>
     val inverse: BiMap<V, K>
 }
 
-class BiHashMap<K, V> (private val direct: Map<K, V>): HashMap<K, V>(direct), BiMap<K,V> {
+class BiHashMap<K, V> (private val direct: Map<K, V>): HashMap<K, V>(direct), BiMap<K, V> {
     override val values: MutableSet<V>
         get() = direct.values.toMutableSet()
 

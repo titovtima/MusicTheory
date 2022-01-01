@@ -1,3 +1,5 @@
+package titovtima.musicTheory
+
 class Chord (val note: Note, val type: String) {
     init {
         if (!chordTypes.contains(type)) throw ChordException(note, type)

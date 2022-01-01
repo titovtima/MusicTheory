@@ -1,3 +1,5 @@
+package titovtima.musicTheory
+
 class Key (val tonic: Note, val mode: String) {
     val name = tonic.name + mode
 
@@ -19,7 +21,7 @@ class Key (val tonic: Note, val mode: String) {
 
         fun keyFromName(name: String): Key {
             val (key, rest) = keyFromString(name)
-            if (key == null || rest != "") throw KeyException("Key name = $name, Strict cast failed")
+            if (key == null || rest != "") throw KeyException("titovtima.MusicTheory.Key name = $name, Strict cast failed")
             return key
         }
     }
