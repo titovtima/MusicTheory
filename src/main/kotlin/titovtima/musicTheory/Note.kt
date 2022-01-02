@@ -3,7 +3,8 @@ package titovtima.musicTheory
 class Note (noteId: Int, natural: Int) {
     val noteId = (noteId + 1200) % 12
     val natural = (natural + 700) % 7
-    val name: String = nameFromId(noteId, natural) ?: throw NoteException(noteId = noteId, natural = natural)
+    val name: String = nameFromId(this.noteId, this.natural)
+        ?: throw NoteException(noteId = this.noteId, natural = this.natural)
 
     constructor(note: Note) : this(note.noteId, note.natural)
     constructor(name: String) : this(noteFromName(name))
@@ -77,7 +78,7 @@ class Note (noteId: Int, natural: Int) {
 
     fun transpose(origin: Key, target: Key) =
         if (origin.mode != target.mode) throw KeyException("Try to transpose from ${origin.name} to ${target.name}")
-        else Note(noteId + (target.tonic.noteId - origin.tonic.noteId),
-            natural + (target.tonic.natural - origin.tonic.natural))
+        else Note(this.noteId + (target.tonic.noteId - origin.tonic.noteId),
+            this.natural + (target.tonic.natural - origin.tonic.natural))
 
 }
