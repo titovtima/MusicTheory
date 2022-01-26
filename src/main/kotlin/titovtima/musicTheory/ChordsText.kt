@@ -6,18 +6,18 @@ import titovtima.musicTheory.Note.Companion.sharp
 class ChordsText (val list: List<Either<Chord, String>>) {
     companion object {
         fun fromPlainText(text: String) = ChordsText(text.map { char ->
-                when(char) {
-                    '#' -> sharp
-                    'b' -> flat
-                    // Russian letters to English
+            when(char) {
+                '#' -> sharp
+                'b' -> flat
+                // Russian letters to English
 //                    'А' -> 'A'
 //                    'В' -> 'B'
 //                    'С' -> 'C'
 //                    'Е' -> 'E'
 //                    'Н' -> 'H'
-                    else -> char
-                }
-            }.toString())
+                else -> char
+            }
+        }.joinToString(""))
     }
 
     constructor(text: String) : this(ChordsText.run {
@@ -29,10 +29,14 @@ class ChordsText (val list: List<Either<Chord, String>>) {
                 resultList = resultList.plus(chord.eitherLeft())
                 restText = newRestText
             } else {
-                resultList = when(val last = resultList.last()) {
-                    is Either.Left -> resultList.plus(restText[0].toString().eitherRight())
-                    is Either.Right -> resultList.dropLast(1).plus((last.value + restText[0]).eitherRight())
-                }
+                resultList =
+                    if (resultList.isEmpty())
+                        resultList.plus(restText[0].toString().eitherRight())
+                    else
+                        when(val last = resultList.last()) {
+                            is Either.Left -> resultList.plus(restText[0].toString().eitherRight())
+                            is Either.Right -> resultList.dropLast(1).plus((last.value + restText[0]).eitherRight())
+                        }
                 restText = restText.substring(1)
             }
         }
