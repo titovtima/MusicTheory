@@ -1,8 +1,8 @@
 package titovtima.musicTheory
 
 import titovtima.musicTheory.Note.Companion.sharp
-import org.junit.Test
 import titovtima.musicTheory.Note.Companion.flat
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TransposeTest {

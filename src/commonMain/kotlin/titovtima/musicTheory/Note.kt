@@ -15,7 +15,7 @@ class Note (noteId: Int, natural: Int) {
         val doubleSharp = "\uD834\uDD2A"
         val doubleFlat = "\uD834\uDD2B"
 
-        val naturalToId = BiHashMap(mapOf(
+        val naturalToId = BiMap(mapOf(
             0 to 0,
             1 to 2,
             2 to 4,
@@ -25,7 +25,7 @@ class Note (noteId: Int, natural: Int) {
             6 to 11
         ))
 
-        val naturalToName = BiHashMap(mapOf(
+        val naturalToName = BiMap(mapOf(
             0 to 'C',
             1 to 'D',
             2 to 'E',
@@ -53,7 +53,7 @@ class Note (noteId: Int, natural: Int) {
         fun noteFromString (name: String): Pair<Note?, String> {
             if (name.isEmpty()) return (null to name)
             val naturalChar = name[0]
-            val natural = naturalToName.inverse[naturalChar] ?: return (null to name)
+            val natural = naturalToName.reverse[naturalChar] ?: return (null to name)
             val noteId = naturalToId[natural] ?: return (null to name)
             return when {
                 name.length >= 2 && name[1] == sharp ->

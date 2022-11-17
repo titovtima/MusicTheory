@@ -3,7 +3,7 @@ package titovtima.musicTheory
 import titovtima.musicTheory.Note.Companion.doubleFlat
 import titovtima.musicTheory.Note.Companion.flat
 import titovtima.musicTheory.Note.Companion.sharp
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ChordTest {
