@@ -115,4 +115,29 @@ class TransposeTest {
             F | C | Am | G |
         """.trimIndent(), result)
     }
+
+    @Test
+    fun testTransposeReducingSpaces_1() {
+        val text = ChordsText.fromPlainText("""
+Fm             A♭
+Ты есть огонь, а мы-Твой храм
+      E♭           Cm
+Ты - голос, а мы - песня Твоя
+Fm                 A♭
+Ты - наш Господь, мы - Твои дети
+       E♭             Cm
+Ты - свет, мы Тебе вверяем себя
+        """.trimIndent())
+        val result = text.transposeReducingSpaces(Key("Fm"), Key("C${sharp}m")).toString()
+        assertEquals("""
+C♯m            E 
+Ты есть огонь, а мы-Твой храм
+      B            G♯m
+Ты - голос, а мы - песня Твоя
+C♯m                E 
+Ты - наш Господь, мы - Твои дети
+       B              G♯m
+Ты - свет, мы Тебе вверяем себя
+        """.trimIndent(), result)
+    }
 }

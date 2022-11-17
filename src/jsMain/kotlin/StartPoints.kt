@@ -20,8 +20,9 @@ fun transposeChord_JS(chord: Chord, originKey: Key, targetKey: Key) =
     chord.transpose(originKey, targetKey)
 
 @JsName("transposeChordsText")
-fun transposeChordsText_JS(chordsText: ChordsText, originKey: Key, targetKey: Key) =
-    chordsText.transpose(originKey, targetKey)
+fun transposeChordsText_JS(chordsText: ChordsText, originKey: Key, targetKey: Key, reduceSpaces: Boolean = false) =
+    if (reduceSpaces) chordsText.transposeReducingSpaces(originKey, targetKey)
+    else chordsText.transpose(originKey, targetKey)
 
 @JsName("musicTextFromPlainText")
 fun musicTextFromPlainText_JS(text: String) = PlainTextAPI.musicTextFromPlainText(text)
