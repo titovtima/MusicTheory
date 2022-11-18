@@ -130,14 +130,47 @@ Fm                 A♭
         """.trimIndent())
         val result = text.transposeReducingSpaces(Key("Fm"), Key("C${sharp}m")).toString()
         assertEquals("""
-C♯m            E 
+C♯m            E
 Ты есть огонь, а мы-Твой храм
       B            G♯m
 Ты - голос, а мы - песня Твоя
-C♯m                E 
+C♯m                E
 Ты - наш Господь, мы - Твои дети
        B              G♯m
 Ты - свет, мы Тебе вверяем себя
+        """.trimIndent(), result)
+    }
+
+    @Test
+    fun testTransposeReducingSpaces_2() {
+        val text = ChordsText.fromPlainText("""
+            G 
+Люблю Твой голос
+          C                G 
+Что проводил меня сквозь пламя
+        D/F♯  Em          C            D 
+Средь тьмы ночной Ты со мной, Бог, Ты рядом
+              Em 
+Я знаю, Ты - Отец мой
+C                   G  D/F♯
+ Я знаю, Ты - мой друг
+Em    C          D         G 
+ Окружён Твоей благостью, Бог
+        """.trimIndent())
+        val result = text.transposeReducingSpaces(Key("G"), Key("F♯")).toString()
+        assertEquals("""
+            F♯ 
+Люблю Твой голос
+          B                F♯ 
+Что проводил меня сквозь пламя
+        C♯/E♯ D♯m         B            C♯ 
+Средь тьмы ночной Ты со мной, Бог, Ты рядом
+              D♯m 
+Я знаю, Ты - Отец мой
+B                   F♯ C♯/E♯
+ Я знаю, Ты - мой друг
+D♯m   B          C♯        F♯ 
+ Окружён Твоей благостью, Бог
         """.trimIndent(), result)
     }
 }

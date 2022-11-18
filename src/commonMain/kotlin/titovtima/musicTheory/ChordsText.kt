@@ -1,7 +1,7 @@
 package titovtima.musicTheory
 
-import titovtima.musicTheory.Note.Companion.flat
-import titovtima.musicTheory.Note.Companion.sharp
+import kotlin.math.max
+import kotlin.math.min
 
 class ChordsText (val list: List<Either<Chord, String>>) {
     companion object {
@@ -48,30 +48,38 @@ class ChordsText (val list: List<Either<Chord, String>>) {
     })
 
     fun transposeReducingSpaces(origin: Key, target: Key): ChordsText {
-        val array = this.list.toTypedArray()
-        return ChordsText(array.mapIndexed { index, elem ->
-            when(elem) {
+        var needSpaces = 0
+        return ChordsText(this.list.map { elem ->
+            when (elem) {
                 is Either.Left -> {
                     val newChord = elem.value.transpose(origin, target)
-                    when (newChord.name.length - elem.value.name.length) {
-                        1 -> {
-                            if (index + 1 < array.size) {
-                                val nextElement = array[index + 1]
-                                if (nextElement is Either.Right && nextElement.value[0] == ' ')
-                                    array[index + 1] = nextElement.value.drop(1).eitherRight()
-                            }
-                        }
-                        -1 -> {
-                            if (index + 1 < array.size) {
-                                val nextElement = array[index + 1]
-                                if (nextElement is Either.Right)
-                                    array[index + 1] = (' ' + nextElement.value).eitherRight()
-                            }
-                        }
-                    }
+                    needSpaces += elem.value.name.length - newChord.name.length
                     newChord.eitherLeft()
                 }
-                is Either.Right -> elem
+                is Either.Right -> {
+                    if (elem.value.contains('\n')) {
+                        needSpaces = 0
+                        return@map elem
+                    }
+                    when {
+                        needSpaces == 0 -> elem
+                        needSpaces > 0 ->
+                            if (elem.value[0] != ' ') elem
+                            else {
+                                val neededSpaces = needSpaces
+                                needSpaces = 0
+                                (" ".repeat(neededSpaces) + elem.value).eitherRight()
+                            }
+                        else -> {
+                            var haveSpaces = elem.value.indexOfFirst { it != ' ' }
+                            if (haveSpaces == -1) haveSpaces = elem.value.length
+                            haveSpaces--
+                            haveSpaces = max(0, min(haveSpaces, -needSpaces))
+                            needSpaces += haveSpaces
+                            elem.value.drop(haveSpaces).eitherRight()
+                        }
+                    }
+                }
             }
         })
     }
