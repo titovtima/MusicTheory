@@ -1,7 +1,4 @@
-import titovtima.musicTheory.Chord
-import titovtima.musicTheory.ChordsText
-import titovtima.musicTheory.Key
-import titovtima.musicTheory.PlainTextAPI
+import titovtima.musicTheory.*
 
 @JsName("chordFromName")
 fun chordFromName_JS(name: String) = Chord.chordFromName(name)
@@ -29,3 +26,7 @@ fun musicTextFromPlainText_JS(text: String) = PlainTextAPI.musicTextFromPlainTex
 
 @JsName("chordsTextFromPlainText")
 fun chordsTextFromPlainText_JS(text: String) = ChordsText.fromPlainText(text)
+
+@JsName("changeChordsTextNotation")
+fun changeChordsTextNotation_JS(chordsText: ChordsText, newNotation: NotationSystem, reduceSpaces: Boolean = false) =
+    chordsText.changeNotation(newNotation, reduceSpaces)

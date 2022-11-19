@@ -3,11 +3,13 @@ package titovtima.musicTheory
 class Note (noteId: Int, natural: Int) {
     val noteId = (noteId + 1200) % 12
     val natural = (natural + 700) % 7
-    val name: String = nameFromId(this.noteId, this.natural)
-        ?: throw NoteException(noteId = this.noteId, natural = this.natural)
+    fun name(notationSystem: NotationSystem = defaultNotation): String =
+        nameFromId(this.noteId, this.natural, notationSystem)
+            ?: throw NoteException(noteId = this.noteId, natural = this.natural)
 
     constructor(note: Note) : this(note.noteId, note.natural)
-    constructor(name: String) : this(noteFromName(name))
+    constructor(name: String, notationSystem: NotationSystem = defaultNotation) :
+            this(noteFromName(name, notationSystem))
 
     companion object {
         val sharp = '\u266F'
@@ -25,18 +27,34 @@ class Note (noteId: Int, natural: Int) {
             6 to 11
         ))
 
-        val naturalToName = BiMap(mapOf(
-            0 to 'C',
-            1 to 'D',
-            2 to 'E',
-            3 to 'F',
-            4 to 'G',
-            5 to 'A',
-            6 to 'B'
-        ))
+        fun naturalToName(notationSystem: NotationSystem = defaultNotation): BiMap<Int, Char> =
+            when (notationSystem) {
+                NotationSystem.English -> BiMap(mapOf(
+                    0 to 'C',
+                    1 to 'D',
+                    2 to 'E',
+                    3 to 'F',
+                    4 to 'G',
+                    5 to 'A',
+                    6 to 'B'
+                ))
+                NotationSystem.German -> BiMap(mapOf(
+                    0 to 'C',
+                    1 to 'D',
+                    2 to 'E',
+                    3 to 'F',
+                    4 to 'G',
+                    5 to 'A',
+                    6 to 'H'
+                ))
+            }
 
-        fun nameFromId (noteId: Int, natural: Int): String? {
-            val naturalName = naturalToName[natural] ?: return null
+
+
+
+        fun nameFromId (noteId: Int, natural: Int, notationSystem: NotationSystem = defaultNotation): String? {
+            if (notationSystem == NotationSystem.German && noteId == 10 && natural == 6) return "B"
+            val naturalName = naturalToName(notationSystem)[natural] ?: return null
             val naturalId = naturalToId[natural] ?: return null
             return naturalName.plus(
                 when ((noteId - naturalId + 12) % 12) {
@@ -50,10 +68,12 @@ class Note (noteId: Int, natural: Int) {
             )
         }
 
-        fun noteFromString (name: String): Pair<Note?, String> {
+        fun noteFromString (name: String, notationSystem: NotationSystem = defaultNotation): Pair<Note?, String> {
             if (name.isEmpty()) return (null to name)
             val naturalChar = name[0]
-            val natural = naturalToName.reverse[naturalChar] ?: return (null to name)
+            if (notationSystem == NotationSystem.German && naturalChar == 'B')
+                return (Note(10, 6) to name.substring(1))
+            val natural = naturalToName(notationSystem).reverse[naturalChar] ?: return (null to name)
             val noteId = naturalToId[natural] ?: return (null to name)
             return when {
                 name.length >= 2 && name[1] == sharp ->
@@ -69,15 +89,15 @@ class Note (noteId: Int, natural: Int) {
             }
         }
 
-        fun noteFromName (name: String): Note {
-            val (note, rest) = noteFromString(name)
+        fun noteFromName (name: String, notationSystem: NotationSystem = defaultNotation): Note {
+            val (note, rest) = noteFromString(name, notationSystem)
             if (note == null || rest != "") throw NoteException(noteName = name, message = "Strict cast failed")
             return note
         }
     }
 
     fun transpose(origin: Key, target: Key) =
-        if (origin.mode != target.mode) throw KeyException("Try to transpose from ${origin.name} to ${target.name}")
+        if (origin.mode != target.mode) throw KeyException("Try to transpose from ${origin.name()} to ${target.name()}")
         else Note(this.noteId + (target.tonic.noteId - origin.tonic.noteId),
             this.natural + (target.tonic.natural - origin.tonic.natural))
 

@@ -3,16 +3,20 @@ package titovtima.musicTheory
 import kotlin.math.max
 import kotlin.math.min
 
-class ChordsText (val list: List<Either<Chord, String>>) {
+class ChordsText (val list: List<Either<Chord, String>>, notationSystem: NotationSystem = defaultNotation) {
+    var notationSystem: NotationSystem = notationSystem
+    private set
+
     companion object {
-        fun fromPlainText(text: String) = ChordsText(PlainTextAPI.musicTextFromPlainText(text))
+        fun fromPlainText(text: String, notationSystem: NotationSystem = defaultNotation) =
+            ChordsText(PlainTextAPI.musicTextFromPlainText(text), notationSystem)
     }
 
-    constructor(text: String) : this(ChordsText.run {
+    constructor(text: String, notationSystem: NotationSystem = defaultNotation) : this(ChordsText.run {
         var restText = text
         var resultList = listOf<Either<Chord, String>>()
         while (restText.isNotEmpty()) {
-            val (chord, newRestText) = Chord.chordFromString(restText)
+            val (chord, newRestText) = Chord.chordFromString(restText, notationSystem)
             if (chord != null) {
                 resultList = resultList.plus(chord.eitherLeft())
                 restText = newRestText
@@ -31,11 +35,11 @@ class ChordsText (val list: List<Either<Chord, String>>) {
         if (resultList.isEmpty())
             resultList = resultList.plus("".eitherRight())
         resultList
-    })
+    }, notationSystem)
 
     override fun toString() = list.map {
         when(it) {
-            is Either.Left -> it.value.name
+            is Either.Left -> it.value.name(notationSystem)
             is Either.Right -> it.value
         }
     }.reduce { res, s -> res + s }
@@ -47,40 +51,58 @@ class ChordsText (val list: List<Either<Chord, String>>) {
         }
     })
 
+    private fun reduceSpaces(string: String, needSpaces: Int) : Pair<String, Int> {
+        if (string.contains('\n')) {
+            return string to 0
+        }
+        return when {
+            needSpaces == 0 -> string to 0
+            needSpaces > 0 ->
+                if (string[0] != ' ') string to needSpaces
+                else (" ".repeat(needSpaces) + string) to 0
+            else -> {
+                var haveSpaces = string.indexOfFirst { it != ' ' }
+                if (haveSpaces == -1) haveSpaces = string.length
+                haveSpaces--
+                haveSpaces = max(0, min(haveSpaces, -needSpaces))
+                string.drop(haveSpaces) to (needSpaces + haveSpaces)
+            }
+        }
+    }
+
     fun transposeReducingSpaces(origin: Key, target: Key): ChordsText {
         var needSpaces = 0
         return ChordsText(this.list.map { elem ->
             when (elem) {
                 is Either.Left -> {
                     val newChord = elem.value.transpose(origin, target)
-                    needSpaces += elem.value.name.length - newChord.name.length
+                    needSpaces += elem.value.name(notationSystem).length - newChord.name(notationSystem).length
                     newChord.eitherLeft()
                 }
                 is Either.Right -> {
-                    if (elem.value.contains('\n')) {
-                        needSpaces = 0
-                        return@map elem
-                    }
-                    when {
-                        needSpaces == 0 -> elem
-                        needSpaces > 0 ->
-                            if (elem.value[0] != ' ') elem
-                            else {
-                                val neededSpaces = needSpaces
-                                needSpaces = 0
-                                (" ".repeat(neededSpaces) + elem.value).eitherRight()
-                            }
-                        else -> {
-                            var haveSpaces = elem.value.indexOfFirst { it != ' ' }
-                            if (haveSpaces == -1) haveSpaces = elem.value.length
-                            haveSpaces--
-                            haveSpaces = max(0, min(haveSpaces, -needSpaces))
-                            needSpaces += haveSpaces
-                            elem.value.drop(haveSpaces).eitherRight()
-                        }
-                    }
+                    val reduced = reduceSpaces(elem.value, needSpaces)
+                    needSpaces = reduced.second
+                    reduced.first.eitherRight()
                 }
             }
         })
+    }
+
+    fun changeNotation(newNotation: NotationSystem, reduceSpaces: Boolean = false) {
+        if (newNotation == this.notationSystem) return
+        this.notationSystem = newNotation
+        if (!reduceSpaces) return
+        var needSpaces = 0
+        list.forEach { elem ->
+            when (elem) {
+                is Either.Left ->
+                    needSpaces += elem.value.name(notationSystem).length - elem.value.name(newNotation).length
+                is Either.Right -> {
+                    val reduced = reduceSpaces(elem.value, needSpaces)
+                    needSpaces = reduced.second
+                    reduced.first.eitherRight()
+                }
+            }
+        }
     }
 }
