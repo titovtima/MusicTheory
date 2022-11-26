@@ -117,7 +117,7 @@ class TransposeTest {
     }
 
     @Test
-    fun testTransposeReducingSpaces_1() {
+    fun testTransposeTextReducingSpaces_1() {
         val text = ChordsText.fromPlainText("""
 Fm             A♭
 Ты есть огонь, а мы-Твой храм
@@ -142,7 +142,7 @@ C♯m                E
     }
 
     @Test
-    fun testTransposeReducingSpaces_2() {
+    fun testTransposeTextReducingSpaces_2() {
         val text = ChordsText.fromPlainText("""
             G 
 Люблю Твой голос
@@ -172,5 +172,12 @@ B                   F♯ C♯/E♯
 D♯m   B          C♯        F♯ 
  Окружён Твоей благостью, Бог
         """.trimIndent(), result)
+    }
+
+    @Test
+    fun testTransposeTextInGermanNotation_1() {
+        val chordsText = ChordsText.fromPlainText("G | Em | C | D", NotationSystem.German)
+        val res = chordsText.transpose(Key("G"), Key("D"))
+        assertEquals("D | Hm | G | A", res.toString())
     }
 }

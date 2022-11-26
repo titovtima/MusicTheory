@@ -49,7 +49,7 @@ class ChordsText (val list: List<Either<Chord, String>>, notationSystem: Notatio
             is Either.Left -> it.value.transpose(origin, target).eitherLeft()
             is Either.Right -> it
         }
-    })
+    }, notationSystem)
 
     private fun reduceSpaces(string: String, needSpaces: Int) : Pair<String, Int> {
         if (string.contains('\n')) {
@@ -85,24 +85,25 @@ class ChordsText (val list: List<Either<Chord, String>>, notationSystem: Notatio
                     reduced.first.eitherRight()
                 }
             }
-        })
+        }, notationSystem)
     }
 
     fun changeNotation(newNotation: NotationSystem, reduceSpaces: Boolean = false) {
         if (newNotation == this.notationSystem) return
-        this.notationSystem = newNotation
-        if (!reduceSpaces) return
-        var needSpaces = 0
-        list.forEach { elem ->
-            when (elem) {
-                is Either.Left ->
-                    needSpaces += elem.value.name(notationSystem).length - elem.value.name(newNotation).length
-                is Either.Right -> {
-                    val reduced = reduceSpaces(elem.value, needSpaces)
-                    needSpaces = reduced.second
-                    reduced.first.eitherRight()
+        if (reduceSpaces) {
+            var needSpaces = 0
+            list.forEach { elem ->
+                when (elem) {
+                    is Either.Left ->
+                        needSpaces += elem.value.name(notationSystem).length - elem.value.name(newNotation).length
+                    is Either.Right -> {
+                        val reduced = reduceSpaces(elem.value, needSpaces)
+                        needSpaces = reduced.second
+                        reduced.first.eitherRight()
+                    }
                 }
             }
         }
+        this.notationSystem = newNotation
     }
 }
