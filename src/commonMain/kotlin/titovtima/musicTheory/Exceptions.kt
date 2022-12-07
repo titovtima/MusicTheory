@@ -7,3 +7,7 @@ class ChordException(val note: Note? = null, val type: String? = null, val chord
     : Exception("Exception: note ${note?.name()}, type $type, chord name $chordName, message: $message")
 
 class KeyException(override val message: String?) : Exception(message)
+
+class IntervalException(val lowNote: NoteWithOctave? = null, val highNote: NoteWithOctave? = null, message: String? = null) :
+        Exception("Exception: lowNote (noteId: ${lowNote?.noteId}, natural: ${lowNote?.natural}), " +
+                "highNote (noteId: ${highNote?.noteId}, natural: ${highNote?.natural}), message: $message");

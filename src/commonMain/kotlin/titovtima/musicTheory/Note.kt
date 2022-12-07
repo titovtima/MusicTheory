@@ -1,8 +1,8 @@
 package titovtima.musicTheory
 
-class Note (noteId: Int, natural: Int) {
-    val noteId = (noteId + 1200) % 12
-    val natural = (natural + 700) % 7
+open class Note (noteId: Int, natural: Int) {
+    open val noteId = (noteId + 1200) % 12
+    open val natural = (natural + 700) % 7
     fun name(notationSystem: NotationSystem = defaultNotation): String =
         nameFromId(this.noteId, this.natural, notationSystem)
             ?: throw NoteException(noteId = this.noteId, natural = this.natural)

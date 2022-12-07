@@ -47,3 +47,14 @@ fun keyName_JS(key: Key, notationSystem: String = "English") = key.name(notation
 
 @JsName("chordsTextToString")
 fun chordsTextToString_JS(chordsText: ChordsText) = chordsText.toString()
+
+@JsName("getIntervalNameByDifferenceNumbers")
+fun getIntervalNameByDifferenceNumbers_JS(naturalsDiff: Int, noteIdsDiff: Int) =
+    Interval.possibleIntervals[naturalsDiff to noteIdsDiff]
+
+@JsName("createNoteWithOctave")
+fun createNoteWithOctave_JS(noteId: Int, natural: Int) = NoteWithOctave(noteId, natural)
+
+@JsName("createIntervalByNoteAndDiffs")
+fun createIntervalByNoteAndDiffs_JS(startNote: NoteWithOctave, naturalsDiff: Int, noteIdsDiff: Int) =
+    Interval(startNote, naturalsDiff, noteIdsDiff)
