@@ -52,6 +52,12 @@ fun chordsTextToString_JS(chordsText: ChordsText) = chordsText.toString()
 fun getIntervalNameByDifferenceNumbers_JS(naturalsDiff: Int, noteIdsDiff: Int) =
     Interval.possibleIntervals[naturalsDiff to noteIdsDiff]
 
+@JsName("getDifferenceNumbersByIntervalName")
+fun getDifferenceNumbersByIntervalName_JS(intervalName: String): Array<Int?> {
+    val pair = Interval.possibleIntervals.reverse[intervalName]
+    return arrayOf(pair?.first, pair?.second)
+}
+
 @JsName("createNoteWithOctave")
 fun createNoteWithOctave_JS(noteId: Int, natural: Int) = NoteWithOctave(noteId, natural)
 

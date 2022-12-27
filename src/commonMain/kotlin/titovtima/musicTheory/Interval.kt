@@ -13,7 +13,7 @@ class Interval(val lowNote: NoteWithOctave, val highNote: NoteWithOctave) {
 
     companion object {
         // first number is naturals' difference, second number is noteIds' difference
-        val possibleIntervals = mapOf(
+        val possibleIntervals = BiMap(mapOf(
             (0 to 0) to "прима",
             (1 to 1) to "малая секунда",
             (1 to 2) to "большая секунда",
@@ -32,7 +32,7 @@ class Interval(val lowNote: NoteWithOctave, val highNote: NoteWithOctave) {
             (6 to 10) to "малая септима",
             (6 to 11) to "большая септима",
             (7 to 12) to "октава",
-        )
+        ))
 
         fun makeIntervalWithSwapNotesIfNeeded(firstNote: NoteWithOctave, secondNote: NoteWithOctave) =
             if (firstNote.natural > secondNote.natural) Interval(secondNote, firstNote)
