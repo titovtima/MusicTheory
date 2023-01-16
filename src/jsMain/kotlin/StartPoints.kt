@@ -48,9 +48,9 @@ fun keyName_JS(key: Key, notationSystem: String = "English") = key.name(notation
 @JsName("chordsTextToString")
 fun chordsTextToString_JS(chordsText: ChordsText) = chordsText.toString()
 
-@JsName("getIntervalNameByDifferenceNumbers")
-fun getIntervalNameByDifferenceNumbers_JS(naturalsDiff: Int, noteIdsDiff: Int) =
-    Interval.possibleIntervals[naturalsDiff to noteIdsDiff]
+@JsName("getIntervalNameByNotesIdsDifference")
+fun getIntervalNameByNotesIdsDifference_JS(noteIdsDiff: Int) =
+    Interval.distanceToIntervalName(noteIdsDiff)
 
 @JsName("getDifferenceNumbersByIntervalName")
 fun getDifferenceNumbersByIntervalName_JS(intervalName: String): Array<Int?> {

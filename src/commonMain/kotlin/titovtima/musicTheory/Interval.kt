@@ -34,6 +34,24 @@ class Interval(val lowNote: NoteWithOctave, val highNote: NoteWithOctave) {
             (7 to 12) to "октава",
         ))
 
+        fun distanceToIntervalName(distance: Int) =
+            when (distance) {
+                0 -> "прима"
+                1 -> "малая секунда"
+                2 -> "большая секунда"
+                3 -> "малая терция"
+                4 -> "большая терция"
+                5 -> "чистая кварта"
+                6 -> "тритон"
+                7 -> "чистая квинта"
+                8 -> "малая секста"
+                9 -> "большая секста"
+                10 -> "малая септима"
+                11 -> "большая септима"
+                12 -> "октава"
+                else -> throw IntervalException(message = "Interval is too wide, distance = $distance")
+            }
+
         fun makeIntervalWithSwapNotesIfNeeded(firstNote: NoteWithOctave, secondNote: NoteWithOctave) =
             if (firstNote.natural > secondNote.natural) Interval(secondNote, firstNote)
             else Interval(firstNote, secondNote)
