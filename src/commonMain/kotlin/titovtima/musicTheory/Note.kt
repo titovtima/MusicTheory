@@ -16,6 +16,8 @@ open class Note (noteId: Int, natural: Int) {
         val flat = '\u266D'
         val doubleSharp = "\uD834\uDD2A"
         val doubleFlat = "\uD834\uDD2B"
+//        val doubleSharp = "\uE002"
+//        val doubleFlat = "\uE001"
 
         val naturalToId = BiMap(mapOf(
             0 to 0,
