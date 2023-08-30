@@ -64,3 +64,9 @@ fun createNoteWithOctave_JS(noteId: Int, natural: Int) = NoteWithOctave(noteId, 
 @JsName("createIntervalByNoteAndDiffs")
 fun createIntervalByNoteAndDiffs_JS(startNote: NoteWithOctave, naturalsDiff: Int, noteIdsDiff: Int) =
     Interval(startNote, naturalsDiff, noteIdsDiff)
+
+@JsName("getDegreesNumber")
+fun getDegreesNumber_JS(key: Key) = key.mode.degreesNumber
+
+@JsName("getDegree")
+fun getDegree_JS(key: Key, degree: Int) = key.getDegree(degree)

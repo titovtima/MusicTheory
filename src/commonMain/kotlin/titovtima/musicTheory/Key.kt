@@ -1,20 +1,22 @@
 package titovtima.musicTheory
 
-class Key (val tonic: Note, val mode: String) {
+import kotlin.math.min
+
+class Key (val tonic: Note, val mode: Mode) {
     fun name(notationSystem: NotationSystem = defaultNotation) = tonic.name(notationSystem) + mode
 
     constructor(key: Key) : this(key.tonic, key.mode)
     constructor(name: String, notationSystem: NotationSystem = defaultNotation) : this(keyFromName(name, notationSystem))
+    constructor(tonic: Note, stringMode: String) : this(tonic.name() + stringMode)
 
     companion object {
-        val modes = listOf("", "m")
-
         fun keyFromString(name: String, notationSystem: NotationSystem = defaultNotation): Pair<Key?, String> {
-            val (note, last_name) = Note.noteFromString(name, notationSystem)
+            val (note, lastName) = Note.noteFromString(name, notationSystem)
             if (note == null) return (null to name)
-            modes.sortedBy { it.length }.reversed().forEach { mode ->
-                if (last_name.length >= mode.length && last_name.substring(0, mode.length) == mode)
-                    return (Key(note, mode) to last_name.substring(mode.length))
+            for (i in min(Mode.maxStringLength, lastName.length) downTo 0) {
+                val mode = Mode.getMode(lastName.dropLast(lastName.length - i))
+                if (mode != null)
+                    return (Key(note, mode) to lastName.drop(i))
             }
             return (null to name)
         }
@@ -24,5 +26,10 @@ class Key (val tonic: Note, val mode: String) {
             if (key == null || rest != "") throw KeyException("titovtima.MusicTheory.Key name = $name, Strict cast failed")
             return key
         }
+    }
+
+    fun getDegree(degree: Int): Note {
+        val degree1 = degree % mode.degreesNumber
+        return Note(tonic.natural + degree1, tonic.noteId + mode.degrees[degree1])
     }
 }
