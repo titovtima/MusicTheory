@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 class Interval(val lowNote: NoteWithOctave, val highNote: NoteWithOctave) {
     val name_ru: String

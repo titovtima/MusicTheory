@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 enum class NotationSystem(val notation: String) { English("English"), German("German") }
 val defaultNotation = NotationSystem.English

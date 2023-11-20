@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 class Chord (val note: Note, val type: String) {
     init {

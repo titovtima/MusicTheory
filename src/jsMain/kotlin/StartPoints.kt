@@ -1,3 +1,4 @@
+import ru.titovtima.musicTheory.*
 import titovtima.musicTheory.*
 
 @JsName("chordFromName")

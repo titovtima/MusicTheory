@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 class NoteWithOctave(override val noteId: Int, override val natural: Int) : Note(noteId, natural) {
     val octave: Int

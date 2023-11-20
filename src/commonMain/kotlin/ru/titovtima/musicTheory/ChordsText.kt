@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 import kotlin.math.max
 import kotlin.math.min

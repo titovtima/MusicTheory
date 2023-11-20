@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 class BiMap<K, V> (private val direct: Map<K, V>) : Map<K, V> {
 

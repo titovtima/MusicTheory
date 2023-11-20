@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 sealed class Either<out L, out R> {
     data class Left<out L, out R>(val value: L) : Either<L, R>()

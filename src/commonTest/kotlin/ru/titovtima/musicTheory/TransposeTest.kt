@@ -1,7 +1,7 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
-import titovtima.musicTheory.Note.Companion.sharp
-import titovtima.musicTheory.Note.Companion.flat
+import ru.titovtima.musicTheory.Note.Companion.sharp
+import ru.titovtima.musicTheory.Note.Companion.flat
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -77,7 +77,8 @@ class TransposeTest {
 
     @Test
     fun testTransposeText_4() {
-        val text = ChordsText.fromPlainText("""
+        val text = ChordsText.fromPlainText(
+            """
             Куплет
             F | F | Bb | Bb |
 
@@ -94,7 +95,8 @@ class TransposeTest {
 
             Мост (В доме Отца)
             Bb | F | Dm | C |
-        """.trimIndent())
+        """.trimIndent()
+        )
         val result = text.transpose(Key("F"), Key("C")).toString()
         assertEquals("""
             Куплет
@@ -118,7 +120,8 @@ class TransposeTest {
 
     @Test
     fun testTransposeTextReducingSpaces_1() {
-        val text = ChordsText.fromPlainText("""
+        val text = ChordsText.fromPlainText(
+            """
 Fm             A♭
 Ты есть огонь, а мы-Твой храм
       E♭           Cm
@@ -127,7 +130,8 @@ Fm                 A♭
 Ты - наш Господь, мы - Твои дети
        E♭             Cm
 Ты - свет, мы Тебе вверяем себя
-        """.trimIndent())
+        """.trimIndent()
+        )
         val result = text.transposeReducingSpaces(Key("Fm"), Key("C${sharp}m")).toString()
         assertEquals("""
 C♯m            E
@@ -143,7 +147,8 @@ C♯m                E
 
     @Test
     fun testTransposeTextReducingSpaces_2() {
-        val text = ChordsText.fromPlainText("""
+        val text = ChordsText.fromPlainText(
+            """
             G 
 Люблю Твой голос
           C                G 
@@ -156,7 +161,8 @@ C                   G  D/F♯
  Я знаю, Ты - мой друг
 Em    C          D         G 
  Окружён Твоей благостью, Бог
-        """.trimIndent())
+        """.trimIndent()
+        )
         val result = text.transposeReducingSpaces(Key("G"), Key("F♯")).toString()
         assertEquals("""
             F♯ 

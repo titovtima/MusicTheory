@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 open class Note (noteId: Int, natural: Int) {
     open val noteId = (noteId + 1200) % 12

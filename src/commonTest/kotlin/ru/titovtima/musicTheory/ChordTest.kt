@@ -1,8 +1,8 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
-import titovtima.musicTheory.Note.Companion.doubleFlat
-import titovtima.musicTheory.Note.Companion.flat
-import titovtima.musicTheory.Note.Companion.sharp
+import ru.titovtima.musicTheory.Note.Companion.doubleFlat
+import ru.titovtima.musicTheory.Note.Companion.flat
+import ru.titovtima.musicTheory.Note.Companion.sharp
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

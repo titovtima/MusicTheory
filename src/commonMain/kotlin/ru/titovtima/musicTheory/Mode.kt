@@ -1,4 +1,4 @@
-package titovtima.musicTheory
+package ru.titovtima.musicTheory
 
 class Mode(val degrees: Array<Int>, val string: String) {
     val degreesNumber: Int
