@@ -2,8 +2,8 @@ plugins {
     kotlin("multiplatform") version "1.7.21"
 }
 
-group = "me.timofejtitov"
-version = "1.0-SNAPSHOT"
+group = "ru.titovtima"
+version = "1.0"
 
 repositories {
     mavenCentral()
