@@ -1,5 +1,4 @@
 import ru.titovtima.musicTheory.*
-import titovtima.musicTheory.*
 
 @JsName("chordFromName")
 fun chordFromName_JS(name: String, notationSystem: String) =
