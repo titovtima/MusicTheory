@@ -23,13 +23,15 @@ kotlin {
             useJUnitPlatform()
         }
     }
-    js {
+    js(IR) {
+        moduleName = "music-theory"
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
             }
         }
         binaries.executable()
+        binaries.library()
     }
     sourceSets {
         val commonMain by getting
