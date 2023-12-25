@@ -26,10 +26,25 @@ class Key (val tonic: Note, val mode: Mode) {
             if (key == null || rest != "") throw KeyException("titovtima.MusicTheory.Key name = $name, Strict cast failed")
             return key
         }
+
+        val keysInCircle = arrayOf(
+            Key("C"), Key("Am"),
+            Key("G"), Key("Em"),
+            Key("D"), Key("Bm"),
+            Key("A"), Key("F${Note.sharp}m"),
+            Key("E"), Key("C${Note.sharp}m"),
+            Key("B"), Key("G${Note.sharp}m"),
+            Key("F${Note.sharp}"), Key("D${Note.sharp}m"),
+            Key("D${Note.flat}"), Key("B${Note.flat}m"),
+            Key("A${Note.flat}"), Key("Fm"),
+            Key("E${Note.flat}"), Key("Cm"),
+            Key("B${Note.flat}"), Key("Gm"),
+            Key("F"), Key("Dm")
+        )
     }
 
     fun getDegree(degree: Int): Note {
         val degree1 = degree % mode.degreesNumber
-        return Note(tonic.natural + degree1, tonic.noteId + mode.degrees[degree1])
+        return Note(tonic.noteId + mode.degrees[degree1], tonic.natural + degree1)
     }
 }
