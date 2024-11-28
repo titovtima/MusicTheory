@@ -3,7 +3,7 @@ package ru.titovtima.musicTheory
 import kotlin.math.min
 
 class Key (val tonic: Note, val mode: Mode) {
-    fun name(notationSystem: NotationSystem = defaultNotation) = tonic.name(notationSystem) + mode
+    fun name(notationSystem: NotationSystem = defaultNotation) = tonic.name(notationSystem) + mode.string
 
     constructor(key: Key) : this(key.tonic, key.mode)
     constructor(name: String, notationSystem: NotationSystem = defaultNotation) : this(keyFromName(name, notationSystem))
@@ -27,7 +27,7 @@ class Key (val tonic: Note, val mode: Mode) {
             return key
         }
 
-        val keysInCircle = arrayOf(
+        val fifthsCircle = arrayOf(
             Key("C"), Key("Am"),
             Key("G"), Key("Em"),
             Key("D"), Key("Bm"),
@@ -40,6 +40,21 @@ class Key (val tonic: Note, val mode: Mode) {
             Key("E${Note.flat}"), Key("Cm"),
             Key("B${Note.flat}"), Key("Gm"),
             Key("F"), Key("Dm")
+        )
+
+        val chromaticCircle = arrayOf(
+            Key("C"), Key("D${Note.flat}"),
+            Key("D"), Key("E${Note.flat}"),
+            Key("E"), Key("F"),
+            Key("F${Note.sharp}"), Key("G"),
+            Key("A${Note.flat}"), Key("A"),
+            Key("B${Note.flat}"), Key("B"),
+            Key("Am"), Key("B${Note.flat}m"),
+            Key("Bm"), Key("Cm"),
+            Key("C${Note.sharp}m"), Key("Dm"),
+            Key("D${Note.sharp}m"), Key("Em"),
+            Key("Fm"), Key("F${Note.sharp}m"),
+            Key("Gm"), Key("G${Note.sharp}m"),
         )
     }
 

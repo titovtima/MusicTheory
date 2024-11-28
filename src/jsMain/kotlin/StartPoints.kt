@@ -154,4 +154,4 @@ fun getDegree_JS(key: KeyJS, degree: Int) = NoteJS(key.toKotlin().getDegree(degr
 
 @JsExport
 @JsName("getCircleKeys")
-fun getCircleKeys_JS() = Key.keysInCircle.map { KeyJS(it) }.toTypedArray()
+fun getCircleKeys_JS() = Key.chromaticCircle.map { KeyJS(it) }.toTypedArray()
