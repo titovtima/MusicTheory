@@ -14,12 +14,21 @@ data class NoteJS(val noteId: Int, val natural: Int) {
 }
 
 @JsExport
-@JsName("Chord")
-data class ChordJS(val note: NoteJS, val type: String) {
+@JsName("ChordType")
+data class ChordTypeJS(val name: String, val notes: Array<Pair<Int,Int>>) {
     @JsName("fromKotlin")
-    constructor(chord: Chord) : this(NoteJS(chord.note), chord.type)
+    constructor(chordType: ChordType) : this(chordType.name, chordType.notes)
 
-    fun toKotlin() = Chord(note.toKotlin(), type)
+    fun toKotlin() = ChordType(name, notes)
+}
+
+@JsExport
+@JsName("Chord")
+data class ChordJS(val note: NoteJS, val type: ChordTypeJS) {
+    @JsName("fromKotlin")
+    constructor(chord: Chord) : this(NoteJS(chord.note), ChordTypeJS(chord.type))
+
+    fun toKotlin() = Chord(note.toKotlin(), type.toKotlin())
 }
 
 @JsExport
@@ -60,23 +69,33 @@ data class IntervalJS(val lowNote: NoteJS, val highNote: NoteJS, val name_ru: St
 }
 
 @JsExport
+@JsName("noteFromName")
+fun noteFromName_JS(name: String, notationSystem: String = "English") =
+    NoteJS(Note.noteFromName(name, notationFromStringOrDefault(notationSystem)))
+
+@JsExport
 @JsName("chordFromName")
-fun chordFromName_JS(name: String, notationSystem: String) =
+fun chordFromName_JS(name: String, notationSystem: String = "English") =
     ChordJS(Chord.chordFromName(name, notationFromStringOrDefault(notationSystem)))
 
 @JsExport
 @JsName("keyFromName")
-fun keyFromName_JS(name: String, notationSystem: String) =
+fun keyFromName_JS(name: String, notationSystem: String = "English") =
     KeyJS(Key.keyFromName(name, notationFromStringOrDefault(notationSystem)))
 
 @JsExport
+@JsName("noteFromString")
+fun noteFromString_JS(name: String, notationSystem: String = "English") =
+    Note.noteFromString(name, notationFromStringOrDefault(notationSystem)).first?.let { NoteJS(it) }
+
+@JsExport
 @JsName("chordFromString")
-fun chordFromString_JS(name: String, notationSystem: String) =
+fun chordFromString_JS(name: String, notationSystem: String = "English") =
     Chord.chordFromString(name, notationFromStringOrDefault(notationSystem)).first?.let { ChordJS(it) }
 
 @JsExport
 @JsName("keyFromString")
-fun keyFromString_JS(name: String, notationSystem: String) =
+fun keyFromString_JS(name: String, notationSystem: String = "English") =
     Key.keyFromString(name, notationFromStringOrDefault(notationSystem)).first?.let { KeyJS(it) }
 
 @JsExport
@@ -96,7 +115,7 @@ fun musicTextFromPlainText_JS(text: String) = PlainTextAPI.musicTextFromPlainTex
 
 @JsExport
 @JsName("chordsTextFromPlainText")
-fun chordsTextFromPlainText_JS(text: String, notationSystem: String) =
+fun chordsTextFromPlainText_JS(text: String, notationSystem: String = "English") =
     ChordsTextJS(ChordsText.fromPlainText(text, notationFromStringOrDefault(notationSystem)))
 
 @JsExport
@@ -155,3 +174,11 @@ fun getDegree_JS(key: KeyJS, degree: Int) = NoteJS(key.toKotlin().getDegree(degr
 @JsExport
 @JsName("getCircleKeys")
 fun getCircleKeys_JS() = Key.chromaticCircle.map { KeyJS(it) }.toTypedArray()
+
+@JsExport
+@JsName("getChordNotes")
+fun getChordNotes_JS(chord: ChordJS) = chord.toKotlin().notes().map { NoteJS(it) }.toTypedArray()
+
+@JsExport
+@JsName("allChordTypes")
+fun allChordTypes_JS() = ChordType.types.map { ChordTypeJS(it) }.toTypedArray()
