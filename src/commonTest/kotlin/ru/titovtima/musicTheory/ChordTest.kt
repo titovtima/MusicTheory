@@ -31,7 +31,7 @@ class ChordTest {
         assertEquals("F${flat}mmaj7", chord.name())
         assertEquals(3, chord.note.natural)
         assertEquals(4, chord.note.noteId)
-        assertEquals("mmaj7", chord.type)
+        assertEquals("mmaj7", chord.type.name)
     }
 
     @Test
@@ -40,7 +40,7 @@ class ChordTest {
         assertEquals("A", chord.name())
         assertEquals(5, chord.note.natural)
         assertEquals(9, chord.note.noteId)
-        assertEquals("", chord.type)
+        assertEquals("", chord.type.name)
     }
 
     @Test
@@ -49,6 +49,47 @@ class ChordTest {
         assertEquals("G${doubleFlat}sus4", chord.name())
         assertEquals(4, chord.note.natural)
         assertEquals(5, chord.note.noteId)
-        assertEquals("sus4", chord.type)
+        assertEquals("sus4", chord.type.name)
+    }
+
+    @Test
+    fun testChordNotes_C() {
+        val chord = Chord("C")
+        val notes = chord.notes()
+        assertEquals(3, notes.size)
+        assertEquals(0, notes[0].noteId)
+        assertEquals(4, notes[1].noteId)
+        assertEquals(7, notes[2].noteId)
+    }
+
+    @Test
+    fun testChordNotes_Gm() {
+        val chord = Chord("Gm")
+        val notes = chord.notes()
+        assertEquals(3, notes.size)
+        assertEquals(7, notes[0].noteId)
+        assertEquals(10, notes[1].noteId)
+        assertEquals(14, notes[2].noteId)
+    }
+
+    @Test
+    fun testChordNotes_Fmaj7() {
+        val chord = Chord("Fmaj7")
+        val notes = chord.notes()
+        assertEquals(4, notes.size)
+        assertEquals(5, notes[0].noteId)
+        assertEquals(9, notes[1].noteId)
+        assertEquals(12, notes[2].noteId)
+        assertEquals(16, notes[3].noteId)
+    }
+
+    @Test
+    fun testChordNotes_Bflatsus4() {
+        val chord = Chord("B${flat}sus4")
+        val notes = chord.notes()
+        assertEquals(3, notes.size)
+        assertEquals(10, notes[0].noteId)
+        assertEquals(15, notes[1].noteId)
+        assertEquals(17, notes[2].noteId)
     }
 }
