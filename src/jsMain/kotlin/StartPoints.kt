@@ -32,6 +32,15 @@ data class ChordJS(val note: NoteJS, val type: ChordTypeJS) {
 }
 
 @JsExport
+@JsName("ChordWithBass")
+data class ChordWithBass_JS(val note: NoteJS, val type: ChordTypeJS, val bass: NoteJS) {
+    @JsName("fromKotlin")
+    constructor(chord: ChordWithBass) : this(NoteJS(chord.note), ChordTypeJS(chord.type), NoteJS(chord.bass))
+
+    fun toKotlin() = ChordWithBass(note.toKotlin(), type.toKotlin(), bass.toKotlin())
+}
+
+@JsExport
 @JsName("ChordsText")
 data class ChordsTextJS(val list: Array<Either<ChordJS, String>>, val notationSystem: String) {
     @JsName("fromKotlin")
@@ -178,6 +187,10 @@ fun getCircleKeys_JS() = Key.chromaticCircle.map { KeyJS(it) }.toTypedArray()
 @JsExport
 @JsName("getChordNotes")
 fun getChordNotes_JS(chord: ChordJS) = chord.toKotlin().notes().map { NoteJS(it) }.toTypedArray()
+
+@JsExport
+@JsName("getChordWithBassNotes")
+fun getChordWithBassNotes_JS(chord: ChordWithBass_JS) = chord.toKotlin().notes().map { NoteJS(it) }.toTypedArray()
 
 @JsExport
 @JsName("allChordTypes")

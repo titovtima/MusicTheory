@@ -7,6 +7,17 @@ open class Note (noteId: Int, natural: Int) {
         nameFromId(this.noteId, this.natural, notationSystem)
             ?: throw NoteException(noteId = this.noteId, natural = this.natural)
 
+    override fun equals(other: Any?): Boolean {
+        return if (other is Note)
+            this.noteId == other.noteId && this.natural == other.natural
+        else
+            super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return noteId.hashCode() + natural.hashCode()
+    }
+
     constructor(note: Note) : this(note.noteId, note.natural)
     constructor(name: String, notationSystem: NotationSystem = defaultNotation) :
             this(noteFromName(name, notationSystem))

@@ -1,6 +1,7 @@
 package ru.titovtima.musicTheory
 
 import ru.titovtima.musicTheory.Note.Companion.doubleFlat
+import ru.titovtima.musicTheory.Note.Companion.doubleSharp
 import ru.titovtima.musicTheory.Note.Companion.flat
 import ru.titovtima.musicTheory.Note.Companion.sharp
 import kotlin.test.Test
@@ -91,5 +92,42 @@ class ChordTest {
         assertEquals(10, notes[0].noteId)
         assertEquals(15, notes[1].noteId)
         assertEquals(17, notes[2].noteId)
+    }
+
+    @Test
+    fun testChordNotes_CbassC() {
+        val chord = ChordWithBass("C")
+        val notes = chord.notes()
+        assertEquals(4, notes.size)
+        assertEquals(0, notes[0].noteId)
+        assertEquals(12, notes[1].noteId)
+        assertEquals(16, notes[2].noteId)
+        assertEquals(19, notes[3].noteId)
+    }
+
+    @Test
+    fun testChordNotes_Fsharp7bassCsharp() {
+        val chord = ChordWithBass("F${sharp}7${ChordWithBass.bassSeparator}C$sharp")
+        assertEquals("C${sharp}", chord.bass.name())
+        val notes = chord.notes()
+        assertEquals(5, notes.size)
+        assertEquals(1, notes[0].noteId)
+        assertEquals(18, notes[1].noteId)
+        assertEquals(22, notes[2].noteId)
+        assertEquals(25, notes[3].noteId)
+        assertEquals(28, notes[4].noteId)
+    }
+
+    @Test
+    fun testChordNotes_Bflat7plus9bassFdoublesharp() {
+        val chord = ChordWithBass("B${flat}7+9${ChordWithBass.bassSeparator}F$doubleSharp")
+        val notes = chord.notes()
+        assertEquals(6, notes.size)
+        assertEquals(7, notes[0].noteId)
+        assertEquals(22, notes[1].noteId)
+        assertEquals(26, notes[2].noteId)
+        assertEquals(29, notes[3].noteId)
+        assertEquals(32, notes[4].noteId)
+        assertEquals(37, notes[5].noteId)
     }
 }
